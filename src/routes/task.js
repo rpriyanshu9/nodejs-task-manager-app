@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const Task = require('../models/task')
 const auth = require('../middleware/auth')
+const User = require('../models/user')
+const { parse } = require('dotenv')
 
 // Create
 router.post('/', auth, async (req, res) => {
@@ -32,9 +34,33 @@ router.get('/:id', auth, async (req, res) => {
 })
 
 router.get('/', auth, async (req, res) => {
+
+    // For filtering
+    const match = {}
+    // For Sorting
+    const sort = {}
+
+    if (req.query.sortBy) {
+        const parts = req.query.sortBy.split(':')
+        sort[parts[0]] = parts[1] === 'asc' ? 1 : -1
+    }
+
+    if (req.query.completed) {
+        match.completed = req.query.completed === 'true'
+    }
+
     try {
-        const tasks = await Task.find({ author: req.user._id })
-        res.send(tasks)
+        const tasks = await req.user.populate({
+            path: 'tasks',
+            match,
+            options: {
+                // For pagination
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip),
+                sort
+            }
+        }).execPopulate()
+        res.send(req.user.tasks)
     } catch (e) {
         res.status(500).send(e)
     }
