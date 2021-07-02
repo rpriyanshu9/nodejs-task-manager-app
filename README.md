@@ -1,4 +1,4 @@
-# nodejs-weather-app
+# nodejs-task-manager-app
 
 ## Deployed at : https://rpriy-task-manager.herokuapp.com/
 
