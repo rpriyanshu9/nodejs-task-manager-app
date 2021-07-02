@@ -5,7 +5,7 @@ const taskRoutes = require('./routes/task')
 const userRoutes = require('./routes/user')
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 
 // For parsing plain JSON
 app.use(express.json())
