@@ -6,7 +6,6 @@ services:
     command: npm run dev
     volumes:
       - .:/usr/app
-      - /usr/app/node_modules
     container_name: task-manager-api
     ports:
       - "3000:3000"
