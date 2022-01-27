@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    command: npm run dev
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    container_name: task-manager-api
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
+    environment:
+      MONGODB_URL: "mongodb://mongo/task-manager-api"
+      PORT: "3000"
+      JWT_PRIVATE_KEY: "setofscrambledchars"
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
